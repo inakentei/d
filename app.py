@@ -198,7 +198,7 @@ def read_root():
     clicks = get_clicks()
     content = f"""
         <div class="center">
-            <h1>Тыкалка для лабораторной</h1>
+            <h1>Кликер для лабораторной</h1>
             <p>Всего нажатий сохранено в базе данных: <strong id="counter" style="font-size: 24px; color: #28a745;">{clicks}</strong></p>
             <br>
             <button class="btn-click" onclick="clickMe()">ТЫК!</button>

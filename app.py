@@ -15,7 +15,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 START_TIME = time.time()
 START_CPU_TIME = psutil.Process(os.getpid()).cpu_times().user + psutil.Process(os.getpid()).cpu_times().system
 
-# ----------------- БАЗА ДАННЫХ (СОХРАНЕНИЕ) -----------------
+# БАЗА ДАННЫХ (СОХРАНЕНИЕ)
 def init_db():
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
@@ -94,7 +94,7 @@ def get_clicks_count_inside_interval(hours_interval: int):
     conn.close()
     return res[0] if res else 0
 
-# ----------------- LIFESPAN -----------------
+# LIFESPAN
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
@@ -102,8 +102,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-# ----------------- ПРОМЕТЕУС МЕТРИКИ -----------------
-# Потребляемые ресурсы
+# ПРОМЕТЕУС МЕТРИКИ
 MEM_USAGE = Gauge("app_container_memory_usage_bytes", "Потребляемая память контейнера в байтах")
 CPU_USAGE_TOTAL = Gauge("app_container_cpu_usage_seconds_total", "Общее потребленное CPU время в секундах")
 
@@ -139,7 +138,7 @@ def metrics():
     
     return Response(content=generate_latest(REGISTRY), media_type="text/plain")
 
-# ----------------- HEALTH CHECK -----------------
+# HEALTH CHECK
 @app.get("/health")
 def health_check():
     try:
@@ -152,7 +151,7 @@ def health_check():
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE
         )
 
-# ----------------- ОБЩИЙ ШАБЛОН ДЛЯ НАВИГАЦИИ -----------------
+# ОБЩИЙ ШАБЛОН ДЛЯ НАВИГАЦИИ 
 def get_layout(content: str, active_tab: str) -> str:
     main_active = "active" if active_tab == "main" else ""
     status_active = "active" if active_tab == "status" else ""
@@ -191,7 +190,7 @@ def get_layout(content: str, active_tab: str) -> str:
     </html>
     """
 
-# ----------------- СТРАНИЦЫ (ИНТЕРФЕЙС) -----------------
+# ИНТЕРФЕЙС
 
 @app.get("/", response_class=HTMLResponse)
 def read_root():
